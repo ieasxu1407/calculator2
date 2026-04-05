@@ -13,93 +13,49 @@ body {
   color: white;
 }
 
-/* 상단 */
-.header {
-  font-size: 32px;
-  padding: 20px;
-  font-weight: bold;
-}
-
-/* 프로 카드 */
-.pro {
-  margin: 10px;
-  padding: 18px;
-  border-radius: 20px;
-  background: linear-gradient(90deg, #4facfe, #00f2fe);
+/* 상단바 */
+.topbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  font-weight: bold;
-}
-
-.pro span {
-  font-size: 14px;
-}
-
-/* 카드 */
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  padding: 10px;
-}
-
-.card {
-  background: #1a1d24;
-  border-radius: 20px;
-  padding: 20px;
-  text-align: left;
-  transition: 0.2s;
-  cursor: pointer;
-  position: relative;
-}
-
-.card:hover {
-  transform: scale(1.03);
-  background: #22252d;
-}
-
-.icon {
-  font-size: 28px;
-  margin-bottom: 10px;
-}
-
-.title {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.sub {
-  font-size: 12px;
-  color: #aaa;
-}
-
-/* 사이드 앱 */
-.side {
-  position: fixed;
-  right: 0;
-  top: 0;
-  width: 95px;
-  height: 100%;
-  background: #0b0c10;
-  padding-top: 20px;
-  overflow-y: auto;
-}
-
-.side-item {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.side-item div {
+  padding: 15px;
   font-size: 22px;
+}
+
+.menu-btn {
+  font-size: 26px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+/* 사이드 메뉴 */
+.sidebar {
+  position: fixed;
+  left: -260px;
+  top: 0;
+  width: 260px;
+  height: 100%;
+  background: #1a1d24;
+  transition: 0.3s;
+  padding-top: 60px;
+  z-index: 10;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar div {
+  padding: 15px;
+  border-bottom: 1px solid #333;
+  cursor: pointer;
+}
+
+.sidebar div:hover {
+  background: #2a2e38;
 }
 
 /* 계산기 */
 .calc {
-  display: none;
   padding: 15px;
 }
 
@@ -142,6 +98,15 @@ body {
   grid-column: span 4;
 }
 
+/* 프로 카드 (메뉴 안) */
+.pro {
+  margin: 10px;
+  padding: 15px;
+  border-radius: 15px;
+  background: linear-gradient(90deg, #4facfe, #00f2fe);
+  text-align: center;
+}
+
 /* 광고 */
 .ad {
   position: fixed;
@@ -150,57 +115,30 @@ body {
   background: #1a1d24;
   text-align: center;
   padding: 10px;
-  font-size: 13px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">CALCU</div>
-
-<div class="pro" onclick="buyPro()">
-  💎 프로 업그레이드
-  <span>광고 제거 + 기능 추가</span>
+<!-- 상단 -->
+<div class="topbar">
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+  CALCU
 </div>
 
-<!-- 메뉴 -->
-<div id="menu" class="grid">
-  <div class="card" onclick="openCalc()">
-    <div class="icon">🧮</div>
-    <div class="title">계산기</div>
-    <div class="sub">기본 계산</div>
-  </div>
+<!-- 사이드 메뉴 -->
+<div id="sidebar" class="sidebar">
+  <div class="pro" onclick="buyPro()">💎 프로 업그레이드</div>
 
-  <div class="card">
-    <div class="icon">💱</div>
-    <div class="title">환율</div>
-    <div class="sub">실시간 환율</div>
-  </div>
-
-  <div class="card">
-    <div class="icon">📏</div>
-    <div class="title">단위 변환</div>
-    <div class="sub">길이/무게</div>
-  </div>
-
-  <div class="card">
-    <div class="icon">📅</div>
-    <div class="title">날짜 계산</div>
-    <div class="sub">D-day 계산</div>
-  </div>
-</div>
-
-<!-- 사이드 -->
-<div class="side">
-  <div class="side-item"><div>⏱️</div>타이머</div>
-  <div class="side-item"><div>🔦</div>손전등</div>
-  <div class="side-item"><div>📷</div>QR</div>
-  <div class="side-item"><div>🎮</div>게임</div>
+  <div onclick="alert('환율 준비중')">💱 환율</div>
+  <div onclick="alert('단위 준비중')">📏 단위 변환</div>
+  <div onclick="alert('날짜 준비중')">📅 날짜 계산</div>
+  <div onclick="alert('타이머 준비중')">⏱️ 타이머</div>
 </div>
 
 <!-- 계산기 -->
-<div id="calc" class="calc">
+<div class="calc">
   <input id="display" class="display" readonly>
 
   <div class="buttons">
@@ -226,13 +164,12 @@ body {
 
     <div class="btn clear" onclick="clearDisplay()">C</div>
   </div>
-
-  <div class="btn" onclick="back()">← 뒤로가기</div>
 </div>
 
 <div id="ad" class="ad">📢 광고 영역</div>
 
 <script>
+// 계산기
 let display = document.getElementById("display");
 
 function press(v){ display.value += v; }
@@ -242,21 +179,19 @@ function calculate(){
 }
 function clearDisplay(){ display.value=""; }
 
-function openCalc(){
-  menu.style.display="none";
-  calc.style.display="block";
-}
-function back(){
-  menu.style.display="grid";
-  calc.style.display="none";
+// 메뉴
+function toggleMenu(){
+  document.getElementById("sidebar").classList.toggle("open");
 }
 
+// 프로
 function buyPro(){
   localStorage.setItem("pro","true");
   alert("프로 구매 완료");
   location.reload();
 }
 
+// 광고 제거
 if(localStorage.getItem("pro")==="true"){
   document.getElementById("ad").style.display="none";
 }
